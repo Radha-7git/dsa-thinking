@@ -64,4 +64,50 @@ is linear, resulting in O(n) time complexity.
 The algorithm uses only a constant amount of extra space for variables, so the
 space complexity is O(1).
 
+## Brute-force solution (initial approach)
+
+```cpp
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int maxHeight = 0;
+        for (int i = 0; i < height.size(); i++) {
+            for (int j = i + 1; j < height.size(); j++) {
+                int length = min(height[i], height[j]);
+                int breadth = j - i;
+                maxHeight = max(maxHeight, length * breadth);
+            }
+        }
+        return maxHeight;
+    }
+};
+
+---
+
+### 2️⃣ Optimized solution (two pointers — final)
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int maxHeight = 0;
+        int left = 0;
+        int right = height.size() - 1;
+
+        while (left < right) {
+            int length = min(height[left], height[right]);
+            int breadth = right - left;
+            maxHeight = max(maxHeight, length * breadth);
+
+            if (height[left] < height[right]) {
+                left++;
+            } else if (height[left] > height[right]) {
+                right--;
+            } else {
+                left++;
+                right--;
+            }
+        }
+        return maxHeight;
+    }
+};
 
